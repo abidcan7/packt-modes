@@ -361,13 +361,22 @@ body { margin: 0; padding: 0; background: #ededee; }
   });
 
   /* Scroll reveal */
-  /* Auto-height: iframe parent'a yukseklik bildir */
+  /* Auto-height: ResizeObserver ile anlık yukseklik bildirimi */
   function reportH() {
-    var h = document.querySelector('.p-section').getBoundingClientRect().height;
-    window.parent.postMessage({ packtHeight: Math.ceil(h) }, '*');
+    var section = document.querySelector('.p-section');
+    if (section) {
+      var h = section.getBoundingClientRect().height;
+      window.parent.postMessage({ packtHeight: Math.ceil(h) }, '*');
+    }
   }
-  window.addEventListener('load', function() { setTimeout(reportH, 100); });
-  window.addEventListener('resize', reportH);
+
+  if ('ResizeObserver' in window) {
+    var ro = new ResizeObserver(function() { reportH(); });
+    ro.observe(document.querySelector('.p-section'));
+  } else {
+    window.addEventListener('load', function() { setTimeout(reportH, 200); });
+    window.addEventListener('resize', reportH);
+  }
 
   var revEls = root.querySelectorAll('[data-reveal]');
   if ('IntersectionObserver' in window) {
