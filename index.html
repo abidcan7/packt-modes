@@ -240,7 +240,45 @@ body { margin: 0; padding: 0; background: #ededee; }
   .p-meta__title { font-size: 13px; }
   .p-meta__body  { font-size: 12px; max-width: 100%; }
 }
-</style>
+
+/* ── Banner ─────────────────────────────────────────── */
+.p-banner-wrap {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  margin-top: 2px;
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity .9s cubic-bezier(.2,.7,.2,1), transform .9s cubic-bezier(.2,.7,.2,1);
+}
+.p-banner-wrap.is-visible {
+  opacity: 1;
+  transform: none;
+}
+.p-banner-wrap img {
+  display: block;
+  width: 100%;
+  height: auto;
+  animation: pkBannerZoom 14s ease-in-out infinite alternate;
+  will-change: transform;
+}
+@keyframes pkBannerZoom {
+  from { transform: scale(1.05) translateX(0); }
+  to   { transform: scale(1.0)  translateX(0); }
+}
+.p-banner-wrap::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(237,237,238,.18) 0%,
+    transparent          30%,
+    transparent          70%,
+    rgba(237,237,238,.18) 100%
+  );
+  pointer-events: none;
+}</style>
 </head>
 <body>
 <div class="packt-root">
@@ -300,6 +338,13 @@ body { margin: 0; padding: 0; background: #ededee; }
   </aside>
 
 </section>
+</div>
+
+<div class="p-banner-wrap" data-banner="">
+  <img src="packt_banner_1.jpg"
+       alt="PACKT — Modüler Çalışma Alanı Sistemleri"
+       width="1920" height="845"
+       loading="lazy">
 </div>
 
 <script>
@@ -377,6 +422,17 @@ body { margin: 0; padding: 0; background: #ededee; }
     window.addEventListener('load', function() { setTimeout(reportH, 200); });
     window.addEventListener('resize', reportH);
   }
+
+  /* Banner reveal */
+  var bannerEl = document.querySelector('[data-banner]');
+  if (bannerEl && 'IntersectionObserver' in window) {
+    var bio = new IntersectionObserver(function(entries) {
+      entries.forEach(function(en) {
+        if (en.isIntersecting) { en.target.classList.add('is-visible'); bio.unobserve(en.target); }
+      });
+    }, { threshold: 0.08 });
+    bio.observe(bannerEl);
+  } else if (bannerEl) { bannerEl.classList.add('is-visible'); }
 
   var revEls = root.querySelectorAll('[data-reveal]');
   if ('IntersectionObserver' in window) {
