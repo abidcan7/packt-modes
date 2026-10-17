@@ -446,7 +446,7 @@ body { margin: 0; padding: 0; background: #ededee; }
           <div class="p-meta__sub"   id="p-s">Profesyonel &mdash; Evden çalışanlar &middot; Freelancerlar</div>
           <div class="p-meta__body"  id="p-b">Profesyoneller için sıradanlığın dışında, nitelikli ve prestijli bir düzen sağlar.</div>
         </div>
-        <a class="p-art__kesfet" href="https://thepackt.co/pages/lansman" target="_top">Keşfet</a>
+        <a class="p-art__kesfet" id="p-k" href="https://thepackt.co/pages/profesyonel-set" target="_top">Keşfet</a>
       </div>
       </div>
 
@@ -469,7 +469,7 @@ body { margin: 0; padding: 0; background: #ededee; }
     </div>
     <div class="p-setup__actions">
       <a class="p-setup__btn p-setup__btn--primary" href="https://thepackt.co/pages/packt-configrator" target="_top">Kendi PACKT'ini Tasarla</a>
-      <a class="p-setup__btn p-setup__btn--ghost" href="https://thepackt.co/pages/lansman" target="_top">&#220;r&#252;nleri &#304;ncele</a>
+      <a class="p-setup__btn p-setup__btn--ghost" href="https://thepackt.co/pages/urunler" target="_top">&#220;r&#252;nleri &#304;ncele</a>
     </div>
   </div>
 </section>
@@ -490,6 +490,14 @@ body { margin: 0; padding: 0; background: #ededee; }
     minimal:{ t: 'Düzenli masa, sade ve şık çalışma alanı.',
               s: 'Minimalist — Sadelik sevenler · Düzen bağımlıları · Mükemmelliyetçiler',
               b: 'Sadece ihtiyacınız olanla minimal bir ortam yaratır.' }
+  };
+
+  /* Keşfet: seçili modun tanıtım sayfası (oradan set ürününe gidilir) */
+  var U = {
+    pro:     'https://thepackt.co/pages/profesyonel-set',
+    gamer:   'https://thepackt.co/pages/oyuncu-set',
+    art:     'https://thepackt.co/pages/sanatci-set',
+    minimal: 'https://thepackt.co/pages/minimalist-set'
   };
 
   var root  = document.querySelector('.packt-root');
@@ -516,6 +524,7 @@ body { margin: 0; padding: 0; background: #ededee; }
     imgs.forEach(function (img) {
       img.classList.toggle('is-on', img.dataset.modeArt === mode);
     });
+    var k = document.getElementById('p-k'); if (k && U[mode]) k.href = U[mode];
     var d = D[mode]; if (!d) return;
     meta.classList.add('fading');
     setTimeout(function () {
